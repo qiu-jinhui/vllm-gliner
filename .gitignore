@@ -8,6 +8,8 @@ models-data/
 security-reports/*
 !security-reports/v0.5-build-record.md
 !security-reports/vllm-hardened-v0.5.json
+!security-reports/v0.5-amd64-build-record.md
+!security-reports/vllm-hardened-v0.5-amd64.json
 
 # Temporary Dockerfiles
 Dockerfile.trivy-test
