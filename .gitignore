@@ -1,8 +1,15 @@
-__pycache__/
-*.py[cod]
-*.egg-info/
-.pytest_cache/
-.ruff_cache/
-.venv/
-.env
-.pi/
+# macOS
+.DS_Store
+
+# Model data
+models-data/
+
+# Security reports: allow only official v0.5 artifacts
+security-reports/*
+!security-reports/v0.5-build-record.md
+!security-reports/vllm-hardened-v0.5.json
+
+# Temporary Dockerfiles
+Dockerfile.trivy-test
+Dockerfile.hardened
+Dockerfile.original
