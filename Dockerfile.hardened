@@ -1,0 +1,58 @@
+ARG VLLM_BASE_IMAGE=vllm/vllm-openai:v0.33.0
+
+FROM ${VLLM_BASE_IMAGE}
+
+LABEL org.opencontainers.image.source="https://github.com/qiu-jinhui/vllm-gliner"
+LABEL org.opencontainers.image.description="Hardened vLLM GLiNER"
+LABEL org.opencontainers.image.version="0.6"
+
+WORKDIR /opt/vllm-gliner
+
+USER root
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends --only-upgrade \
+        apt \
+        libapt-pkg6.0t64 \
+        gnupg2 \
+        gnupg \
+        dirmngr \
+        gnupg-utils \
+        gpg \
+        openssl \
+        libssl3t64 \
+        tar \
+        diffutils \
+        perl \
+        perl-base \
+        perl-modules-5.38 \
+        libperl5.38t64; \
+    apt-get purge -y \
+        ffmpeg \
+        libavcodec60 \
+        libavdevice60 \
+        libavfilter9 \
+        libavformat60 \
+        libavutil58 \
+        libpostproc57 \
+        libswresample4 \
+        libswscale7 \
+        polkitd \
+        libpolkit-agent-1-0 \
+        libpolkit-gobject-1-0 \
+        packagekit \
+        software-properties-common; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/*
+
+COPY pyproject.toml README.md LICENSE ./
+COPY forge/ forge/
+COPY kernels/ kernels/
+COPY models/ models/
+COPY plugins/ plugins/
+COPY poolers/ poolers/
+COPY vllm_factory/ vllm_factory/
+
+RUN pip install --no-cache-dir --no-deps . \
+    && pip install --no-cache-dir 'gliner2==2.1.0' sentencepiece
